@@ -7,7 +7,7 @@ class Swedbank extends iPizza
 
     protected $configName = 'estonia.swedbank';
 
-    protected $requestUrl = 'https://www.swedbank.ee/banklink';
+    protected $requestUrl = 'http://localhost:8080/banklink/swedbank-common';
 
     protected function getAdditionalFields()
     {
@@ -19,7 +19,7 @@ class Swedbank extends iPizza
     protected function getServiceId($type)
     {
         if ($type == self::PAYMENT_REQUEST) {
-            return '1002';
+            return '1012';
         }
 
         return parent::getServiceId($type);
@@ -32,10 +32,13 @@ class Swedbank extends iPizza
             'VK_VERSION',
             'VK_SND_ID',
             'VK_STAMP',
-            'VK_AMOUNT',        // Two fields missing from standard iPizza
+            'VK_AMOUNT',
             'VK_CURR',
             'VK_REF',
-            'VK_MSG'
+            'VK_MSG',
+            'VK_RETURN',
+            'VK_CANCEL',
+            'VK_DATETIME',
         );
     }
 

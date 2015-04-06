@@ -7,7 +7,7 @@ abstract class iPizza extends Banklink
 
     protected $version = '008';
 
-    protected $language = 'LIT';
+    protected $language = 'EST';
 
     protected $currency = 'EUR';
 
@@ -41,17 +41,18 @@ abstract class iPizza extends Banklink
         $requestData = array(
             'VK_SERVICE' => $this->getServiceId(self::PAYMENT_REQUEST),
             'VK_VERSION' => $this->version,
-            'VK_SND_ID' => $this->sellerId,
-            'VK_STAMP' => $orderId,
-            'VK_AMOUNT' => $sum,
-            'VK_CURR' => $this->currency,
-            'VK_ACC' => $this->sellerAccountNumber,
-            'VK_NAME' => $this->sellerName,
-            'VK_REF' => $this->getReferenceNumber($orderId),
-            'VK_MSG' => $description,
-            'VK_RETURN' => $this->callbackUrl,
-            'VK_CANCEL' => $this->cancelUrl,
-            'VK_LANG' => $this->language
+            'VK_SND_ID'  => $this->sellerId,
+            'VK_STAMP'   => $orderId,
+            'VK_AMOUNT'  => $sum,
+            'VK_CURR'    => $this->currency,
+            'VK_ACC'     => $this->sellerAccountNumber,
+            'VK_NAME'    => $this->sellerName,
+            'VK_REF'     => $this->getReferenceNumber($orderId),
+            'VK_MSG'     => $description,
+            'VK_RETURN'  => $this->callbackUrl,
+            'VK_CANCEL'  => $this->cancelUrl,
+            'VK_LANG'    => $this->language,
+            'VK_DATETIME'=> \Carbon\Carbon::now()->toIso8601String()
         );
 
         return $requestData;
@@ -66,10 +67,10 @@ abstract class iPizza extends Banklink
             'VK_STAMP',
             'VK_AMOUNT',
             'VK_CURR',
-            'VK_ACC',
-            'VK_NAME',
             'VK_REF',
             'VK_MSG'
+            'VK_ACC',
+            'VK_NAME',
         );
     }
 
@@ -131,7 +132,7 @@ abstract class iPizza extends Banklink
 
         $hash = $this->generateHash($data, $fields);
 
-        $key = openssl_pkey_get_public('file://' . $this->publicKey);
+        $key = openssl_pkey_get_public(file_get_contents($this->publicKey));
 
         return (openssl_verify( $hash , base64_decode($data[ $this->signatureReturnedField ]), $key) == 1);
 
@@ -141,7 +142,7 @@ abstract class iPizza extends Banklink
     {
         $hash = $this->generateHash($data, $fields);
 
-        $keyId = openssl_get_privatekey('file://' . $this->privateKey, $this->passphrase);
+        $keyId = openssl_pkey_get_private(file_get_contents($this->privateKey), $this->passphrase);
 
         openssl_sign($hash, $signature, $keyId);
         openssl_free_key($keyId);

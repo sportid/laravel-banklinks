@@ -78,7 +78,7 @@ abstract class Banklink
     public function __construct( $configName = null )
     {
 
-        if (!empty( $configName )) {
+        if ( ! empty( $configName )) {
             $this->configName = $configName;
         }
 
@@ -89,19 +89,21 @@ abstract class Banklink
         $configuration = \Config::get( 'laravel-banklinks.' . $this->configName );
 
         $fieldsMap = array(
-            'seller_id' => 'sellerId',
-            'seller_acc_num' => 'sellerAccountNumber',
-            'seller_name' => 'sellerName',
-            'private_key' => 'privateKey',
-            'public_key' => 'publicKey',
+            'seller_id'              => 'sellerId',
+            'seller_acc_num'         => 'sellerAccountNumber',
+            'seller_name'            => 'sellerName',
+            'private_key'            => 'privateKey',
+            'public_key'             => 'publicKey',
             'private_key_passphrase' => 'passphrase',
-            'currency' => 'currency',
-            'language' => 'language',
-            'request_url' => 'requestUrl'
+            'currency'               => 'currency',
+            'language'               => 'language',
+            'request_url'            => 'requestUrl'
         );
 
-        foreach ( $fieldsMap as $configurationField => $classVariable ) {
-            if (!empty( $configuration[ $configurationField ] ) ) {
+        foreach ( $fieldsMap as $configurationField => $classVariable )
+        {
+            if ( ! empty( $configuration[ $configurationField ] ) )
+            {
                 $this->$classVariable = $configuration[ $configurationField ];
             }
         }
