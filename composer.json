@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ArturKp\\LaravelBanklinks": "src/ArturKp/LaravelBanklinks"
+            "ArturKp\\LaravelBanklinks\\": "src"
         }
     }
 }
