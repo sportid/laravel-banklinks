@@ -7,6 +7,6 @@ class Danske extends iPizza
 
 	protected $configName = 'estonia.danske';
 
-	protected $requestUrl = 'http://localhost:8080/banklink/sampo-common';
+	protected $requestUrl = 'https://www2.danskebank.ee/ibank/pizza/pizza';
 
 }

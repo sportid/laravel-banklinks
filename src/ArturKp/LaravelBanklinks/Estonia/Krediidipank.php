@@ -7,6 +7,6 @@ class Krediidipank extends iPizza
 
 	protected $configName = 'estonia.krediidipank';
 
-	protected $requestUrl = 'http://localhost:8080/banklink/krediidipank-common';
+	protected $requestUrl = 'https://i-pank.krediidipank.ee/pay';
 
 }

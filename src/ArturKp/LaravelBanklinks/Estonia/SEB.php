@@ -7,6 +7,6 @@ class SEB extends iPizza
 
 	protected $configName = 'estonia.seb';
 
-	protected $requestUrl = 'http://localhost:8080/banklink/seb-common';
+	protected $requestUrl = 'https://www.seb.ee/cgi-bin/unet3.sh/un3min.r';
 
 }
