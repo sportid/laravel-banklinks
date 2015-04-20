@@ -169,7 +169,6 @@ abstract class Banklink
         if (!empty( $data[ $this->orderIdField ])) {
             $this->orderId = $data[ $this->orderIdField ];
         }
-
         return $this->validateSignature($data, $fields);
     }
 

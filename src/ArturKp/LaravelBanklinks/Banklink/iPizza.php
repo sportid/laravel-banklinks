@@ -21,15 +21,15 @@ abstract class iPizza extends Banklink
     {
         switch ($type) {
             case self::PAYMENT_REQUEST:
-                return '1001';
+                return '1012';
             case self::PAYMENT_SUCCESS:
-                return '1101';
+                return '1111';
             case self::PAYMENT_CANCEL:
-                return '1901';
+                return '1911';
             case self::PAYMENT_ERROR:
-                return '1902';
+                return '1912';
             case self::PAYMENT_RETURN:
-                return '1201';
+                return '1211';
         }
 
         throw new \LogicException(sprintf('Invalid service type: %s', $type));
@@ -68,9 +68,10 @@ abstract class iPizza extends Banklink
             'VK_AMOUNT',
             'VK_CURR',
             'VK_REF',
-            'VK_MSG'
-            'VK_ACC',
-            'VK_NAME',
+            'VK_MSG',
+            'VK_RETURN',
+            'VK_CANCEL',
+            'VK_DATETIME'
         );
     }
 
@@ -85,13 +86,13 @@ abstract class iPizza extends Banklink
             'VK_T_NO',
             'VK_AMOUNT',
             'VK_CURR',
-            'VK_ACC',
+            'VK_REC_ACC',
             'VK_REC_NAME',
             'VK_SND_ACC',
             'VK_SND_NAME',
             'VK_REF',
             'VK_MSG',
-            'VK_T_DATE'
+            'VK_T_DATETIME'
         );
     }
 
@@ -129,13 +130,11 @@ abstract class iPizza extends Banklink
 
     protected function validateSignature($data, $fields)
     {
-
         $hash = $this->generateHash($data, $fields);
 
         $key = openssl_pkey_get_public(file_get_contents($this->publicKey));
 
-        return (openssl_verify( $hash , base64_decode($data[ $this->signatureReturnedField ]), $key) == 1);
-
+        return (openssl_verify( $hash , base64_decode($data[ $this->signatureReturnedField ]), $key) === 1);
     }
 
     protected function getRequestSignature($data, $fields)
@@ -154,19 +153,19 @@ abstract class iPizza extends Banklink
 
     protected function generateHash(array $data, $fields)
     {
-
         $hash = '';
-        foreach ($fields as $fieldName) {
 
-            if ( empty( $data[ $fieldName ])) {
+        foreach ($fields as $fieldName)
+        {
+
+            if ( empty( $data[ $fieldName ]))
+            {
                 continue;
             }
 
             $content = $data[ $fieldName ];
 
-//            $content = !empty( $data[ $fieldName ]) ? $data[$fieldName] : '';
-
-            $hash .= sprintf("%03d", strlen($content)) . $content;
+            $hash .= sprintf("%03d", mb_strlen($content)) . $content;
         }
 
         return $hash;
