@@ -4,156 +4,156 @@ use \Config;
 
 abstract class Banklink
 {
-    protected $version;
+	protected $version;
 
-    protected $sellerId;
+	protected $sellerId;
 
-    protected $sellerAccountNumber;
+	protected $sellerAccountNumber;
 
-    protected $sellerName;
+	protected $sellerName;
 
-    protected $language;
+	protected $language;
 
-    protected $currency;
+	protected $currency;
 
-    protected $privateKey;
+	protected $privateKey;
 
-    protected $passphrase;
+	protected $passphrase;
 
-    protected $publicKey;
+	protected $publicKey;
 
-    protected $callbackUrl;
+	protected $callbackUrl;
 
-    protected $cancelUrl;
+	protected $cancelUrl;
 
-    protected $returnUrl;
+	protected $returnUrl;
 
-    protected $configName = null;
+	protected $configName = null;
 
-    protected $signatureField;
+	protected $signatureField;
 
-    protected $signatureReturnedField;
+	protected $signatureReturnedField;
 
-    protected $orderId;
+	protected $orderId;
 
-    protected $orderIdField;
+	protected $orderIdField;
 
-    const PAYMENT_REQUEST = 1;
-    const PAYMENT_SUCCESS = 2;
-    const PAYMENT_CANCEL = 3;
+	const PAYMENT_REQUEST = 1;
+	const PAYMENT_SUCCESS = 2;
+	const PAYMENT_CANCEL = 3;
 
-    protected abstract function getServiceId( $type );
+	protected abstract function getServiceId( $type );
 
-    protected abstract function getPaymentRequestData($orderId, $sum, $description );
+	protected abstract function getPaymentRequestData($orderId, $sum, $description );
 
-    protected abstract function getPaymentRequestFields();
+	protected abstract function getPaymentRequestFields();
 
-    protected abstract function getPaymentCancelFields();
+	protected abstract function getPaymentCancelFields();
 
-    protected abstract function getPaymentSuccessFields();
+	protected abstract function getPaymentSuccessFields();
 
-    protected abstract function validateSignature( $data, $fields );
+	protected abstract function validateSignature( $data, $fields );
 
-    protected abstract function getRequestSignature( $data, $id );
+	protected abstract function getRequestSignature( $data, $id );
 
-    public function isCancelResponse( $data )
-    {
-        return $this->isValidResponse( $data, $this->getPaymentCancelFields() );
-    }
+	public function isCancelResponse( $data )
+	{
+		return $this->isValidResponse( $data, $this->getPaymentCancelFields() );
+	}
 
-    public function isPaidResponse( $data )
-    {
-        return $this->isValidResponse( $data, $this->getPaymentSuccessFields() );
-    }
+	public function isPaidResponse( $data )
+	{
+		return $this->isValidResponse( $data, $this->getPaymentSuccessFields() );
+	}
 
-    public function __construct( $configName = null )
-    {
+	public function __construct( $configName = null )
+	{
 
-        if ( ! empty( $configName )) {
-            $this->configName = $configName;
-        }
+		if ( ! empty( $configName )) {
+			$this->configName = $configName;
+		}
 
-        if ( empty( $this->configName )) {
-            throw new \LogicException( 'Missing banklink configuration name' );
-        }
+		if ( empty( $this->configName )) {
+			throw new \LogicException( 'Missing banklink configuration name' );
+		}
 
-        $configuration = \Config::get( 'laravel-banklinks.' . $this->configName );
+		$configuration = \Config::get( 'laravel-banklinks.' . $this->configName );
 
-        $fieldsMap = array(
-            'seller_id'              => 'sellerId',
-            'seller_acc_num'         => 'sellerAccountNumber',
-            'seller_name'            => 'sellerName',
-            'private_key'            => 'privateKey',
-            'public_key'             => 'publicKey',
-            'private_key_passphrase' => 'passphrase',
-            'currency'               => 'currency',
-            'language'               => 'language',
-            'request_url'            => 'requestUrl'
-        );
+		$fieldsMap = array(
+			'seller_id'              => 'sellerId',
+			'seller_acc_num'         => 'sellerAccountNumber',
+			'seller_name'            => 'sellerName',
+			'private_key'            => 'privateKey',
+			'public_key'             => 'publicKey',
+			'private_key_passphrase' => 'passphrase',
+			'currency'               => 'currency',
+			'language'               => 'language',
+			'request_url'            => 'requestUrl'
+		);
 
-        foreach ( $fieldsMap as $configurationField => $classVariable )
-        {
-            if ( ! empty( $configuration[ $configurationField ] ) )
-            {
-                $this->$classVariable = $configuration[ $configurationField ];
-            }
-        }
+		foreach ( $fieldsMap as $configurationField => $classVariable )
+		{
+			if ( ! empty( $configuration[ $configurationField ] ) )
+			{
+				$this->$classVariable = $configuration[ $configurationField ];
+			}
+		}
 
-    }
+	}
 
-    public function getReferenceNumber($orderId)
-    {
-        return $orderId;
-    }
+	public function getReferenceNumber($orderId)
+	{
+		return $orderId;
+	}
 
-    public function getPaymentRequest( $orderId, $sum, $description )
-    {
+	public function getPaymentRequest( $orderId, $sum, $description )
+	{
 
-        $requestData = $this->getPaymentRequestData($orderId, $sum, $description );
+		$requestData = $this->getPaymentRequestData($orderId, $sum, $description );
 
-        $requestData[ $this->signatureField ] = $this->getRequestSignature($requestData, $this->getPaymentRequestFields() );
+		$requestData[ $this->signatureField ] = $this->getRequestSignature($requestData, $this->getPaymentRequestFields() );
 
-        $requestData = array_merge($requestData, $this->getAdditionalFields());
+		$requestData = array_merge($requestData, $this->getAdditionalFields());
 
-        return $requestData;
-    }
+		return $requestData;
+	}
 
-    protected function getAdditionalFields()
-    {
-        return array();
-    }
+	protected function getAdditionalFields()
+	{
+		return array();
+	}
 
-    public function getRequestUrl()
-    {
-        return $this->requestUrl;
-    }
+	public function getRequestUrl()
+	{
+		return $this->requestUrl;
+	}
 
-    public function getOrderId()
-    {
-        return $this->orderId;
-    }
+	public function getOrderId()
+	{
+		return $this->orderId;
+	}
 
-    public function setCallbackUrl($url)
-    {
-        $this->callbackUrl = $url;
+	public function setCallbackUrl($url)
+	{
+		$this->callbackUrl = $url;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function setCancelUrl( $url )
-    {
-        $this->cancelUrl = $url;
+	public function setCancelUrl( $url )
+	{
+		$this->cancelUrl = $url;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function isValidResponse($data, $fields)
-    {
+	public function isValidResponse($data, $fields)
+	{
 
-        if (!empty( $data[ $this->orderIdField ])) {
-            $this->orderId = $data[ $this->orderIdField ];
-        }
-        return $this->validateSignature($data, $fields);
-    }
+		if (!empty( $data[ $this->orderIdField ])) {
+			$this->orderId = $data[ $this->orderIdField ];
+		}
+		return $this->validateSignature($data, $fields);
+	}
 
 }
