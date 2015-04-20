@@ -41,8 +41,6 @@ abstract class Banklink
     const PAYMENT_REQUEST = 1;
     const PAYMENT_SUCCESS = 2;
     const PAYMENT_CANCEL = 3;
-    const PAYMENT_ERROR = 3;
-    const PAYMENT_RETURN = 4;
 
     protected abstract function getServiceId( $type );
 
@@ -54,16 +52,9 @@ abstract class Banklink
 
     protected abstract function getPaymentSuccessFields();
 
-    protected abstract function getPaymentReturnFields();
-
     protected abstract function validateSignature( $data, $fields );
 
     protected abstract function getRequestSignature( $data, $id );
-
-    public function isReturnResponse( $data )
-    {
-        return $this->isValidResponse( $data, $this->getPaymentReturnFields() );
-    }
 
     public function isCancelResponse( $data )
     {
@@ -152,13 +143,6 @@ abstract class Banklink
     public function setCancelUrl( $url )
     {
         $this->cancelUrl = $url;
-
-        return $this;
-    }
-
-    public function setReturnUrl( $url )
-    {
-        $this->returnUrl = $url;
 
         return $this;
     }

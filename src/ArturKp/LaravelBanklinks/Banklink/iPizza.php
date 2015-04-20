@@ -26,13 +26,16 @@ abstract class iPizza extends Banklink
                 return '1111';
             case self::PAYMENT_CANCEL:
                 return '1911';
-            case self::PAYMENT_ERROR:
-                return '1912';
-            case self::PAYMENT_RETURN:
-                return '1211';
         }
 
         throw new \LogicException(sprintf('Invalid service type: %s', $type));
+    }
+
+    protected function getAdditionalFields()
+    {
+        return array(
+            'VK_ENCODING' => $this->requestEncoding
+        );
     }
 
     public function getPaymentRequestData($orderId, $sum, $description)
@@ -96,25 +99,6 @@ abstract class iPizza extends Banklink
         );
     }
 
-    public function getPaymentReturnFields()
-    {
-        return array(
-            'VK_SERVICE',
-            'VK_VERSION',
-            'VK_SND_ID',
-            'VK_REC_ID',
-            'VK_STAMP',
-            'VK_AMOUNT',
-            'VK_CURR',
-            'VK_ACC',
-            'VK_REC_NAME',
-            'VK_SND_ACC',
-            'VK_SND_NAME',
-            'VK_REF',
-            'VK_MSG'
-        );
-    }
-
     public function getPaymentCancelFields()
     {
         return array(
@@ -174,11 +158,6 @@ abstract class iPizza extends Banklink
     protected function getEncodingField()
     {
         return 'VK_ENCODING';
-    }
-
-    public function isReturnResponse( $data )
-    {
-        return $this->isValidResponse( $data, $this->getPaymentReturnFields() ) && $data['VK_SERVICE'] == $this->getServiceId( self::PAYMENT_RETURN );
     }
 
     public function isCancelResponse( $data )
