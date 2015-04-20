@@ -97,14 +97,15 @@ class Solo extends Banklink
 
 	protected function getRequestSignature($data, $fields)
 	{
-
 		$hash = '';
-		foreach ($fields as $fieldName) {
 
+		foreach ($fields as $fieldName)
+		{
 			$content = !empty( $data[$fieldName] ) ? $data[$fieldName] : '';
 
 			$hash .= $content . '&';
 		}
+
 		$hash .= $this->privateKey . '&';
 
 		return strtoupper(hash($this->algorithm, $hash));
