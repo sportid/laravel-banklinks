@@ -106,10 +106,10 @@ abstract class Banklink
 		return $orderId;
 	}
 
-	public function getPaymentRequest( $orderId, $sum, $description )
+	public function getPaymentRequest( $orderId, $sum, $description, $refNr = null)
 	{
 
-		$requestData = $this->getPaymentRequestData($orderId, $sum, $description );
+		$requestData = $this->getPaymentRequestData($orderId, $sum, $description, $refNr);
 
 		$requestData[ $this->signatureField ] = $this->getRequestSignature($requestData, $this->getPaymentRequestFields() );
 
