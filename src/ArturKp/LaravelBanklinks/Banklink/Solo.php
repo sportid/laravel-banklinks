@@ -42,7 +42,7 @@ class Solo extends Banklink
 
 		$requestData = array(
 			'VERSION'  => $this->version,
-			'STAMP'    => time(),
+			'STAMP'    => $orderId,
 			'RCV_ID'   => $this->sellerId,
 			'RCV_NAME' => $this->sellerName,
 			'LANGUAGE' => $this->language,
