@@ -37,7 +37,7 @@ class Solo extends Banklink
 		throw new \LogicException(sprintf('Invalid service type: %s', $type));
 	}
 
-	public function getPaymentRequestData($orderId, $sum, $description)
+	public function getPaymentRequestData($orderId, $sum, $description, $refNr)
 	{
 
 		$requestData = array(
@@ -47,7 +47,7 @@ class Solo extends Banklink
 			'RCV_NAME' => $this->sellerName,
 			'LANGUAGE' => $this->language,
 			'AMOUNT'   => $sum,
-			'REF'      => $this->getReferenceNumber($orderId),
+			'REF'      => $refNr ?: $this->getReferenceNumber($orderId),
 			'DATE'     => $this->date,
 			'MSG'      => $description,
 			'MAC'      => '',

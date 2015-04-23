@@ -38,7 +38,7 @@ abstract class iPizza extends Banklink
         );
     }
 
-    public function getPaymentRequestData($orderId, $sum, $description)
+    public function getPaymentRequestData($orderId, $sum, $description, $refNr = null)
     {
 
         $requestData = array(
@@ -50,7 +50,7 @@ abstract class iPizza extends Banklink
             'VK_CURR'    => $this->currency,
             'VK_ACC'     => $this->sellerAccountNumber,
             'VK_NAME'    => $this->sellerName,
-            'VK_REF'     => $this->getReferenceNumber($orderId),
+            'VK_REF'     => $refNr ?: $this->getReferenceNumber($orderId),
             'VK_MSG'     => $description,
             'VK_RETURN'  => $this->callbackUrl,
             'VK_CANCEL'  => $this->cancelUrl,

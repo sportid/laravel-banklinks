@@ -44,7 +44,7 @@ abstract class Banklink
 
 	protected abstract function getServiceId( $type );
 
-	protected abstract function getPaymentRequestData($orderId, $sum, $description );
+	protected abstract function getPaymentRequestData($orderId, $sum, $description, $refNr);
 
 	protected abstract function getPaymentRequestFields();
 
