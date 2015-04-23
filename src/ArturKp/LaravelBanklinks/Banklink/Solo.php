@@ -37,7 +37,7 @@ class Solo extends Banklink
 		throw new \LogicException(sprintf('Invalid service type: %s', $type));
 	}
 
-	public function getPaymentRequestData($orderId, $sum, $description, $refNr)
+	public function getPaymentRequestData($orderId, $sum, $description, $refNr = null)
 	{
 
 		$requestData = array(
