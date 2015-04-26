@@ -7,6 +7,6 @@ class LHV extends iPizza
 
 	protected $configName = 'estonia.lhv';
 
-	protected $requestUrl = 'https://lhv.ee/banklink';
+	protected $requestUrl = 'https://www.lhv.ee/banklink';
 
 }
