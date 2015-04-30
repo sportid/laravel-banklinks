@@ -13,7 +13,7 @@ class Solo extends Banklink
 
 	protected $keyvers = '0001';
 
-	protected $language = 7;
+	protected $language = 4;
 
 	protected $currency = 'EUR';
 
