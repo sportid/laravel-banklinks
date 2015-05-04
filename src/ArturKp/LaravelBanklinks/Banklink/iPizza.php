@@ -142,10 +142,10 @@ abstract class iPizza extends Banklink
         foreach ($fields as $fieldName)
         {
 
-            if ( empty( $data[ $fieldName ]))
-            {
-                continue;
-            }
+            // if ( empty( $data[ $fieldName ]))
+            // {
+            //     continue;
+            // }
 
             $content = $data[ $fieldName ];
 
