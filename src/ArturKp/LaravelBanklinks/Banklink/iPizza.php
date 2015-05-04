@@ -50,7 +50,7 @@ abstract class iPizza extends Banklink
             'VK_CURR'    => $this->currency,
             'VK_ACC'     => $this->sellerAccountNumber,
             'VK_NAME'    => $this->sellerName,
-            'VK_REF'     => $refNr ?: $this->getReferenceNumber($orderId),
+            'VK_REF'     => $refNr,
             'VK_MSG'     => $description,
             'VK_RETURN'  => $this->callbackUrl,
             'VK_CANCEL'  => $this->cancelUrl,

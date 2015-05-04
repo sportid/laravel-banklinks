@@ -47,7 +47,7 @@ class Solo extends Banklink
 			'RCV_NAME' => $this->sellerName,
 			'LANGUAGE' => $this->language,
 			'AMOUNT'   => $sum,
-			'REF'      => $refNr ?: $this->getReferenceNumber($orderId),
+			'REF'      => $refNr,
 			'DATE'     => $this->date,
 			'MSG'      => $description,
 			'MAC'      => '',
