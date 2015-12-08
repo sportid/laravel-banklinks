@@ -2,7 +2,7 @@
 
 use ArturKp\LaravelBanklinks\Banklink\Solo;
 
-class Nordea extends Solo
+class Nordea extends iPizza
 {
 
 	protected $configName = 'estonia.nordea';
