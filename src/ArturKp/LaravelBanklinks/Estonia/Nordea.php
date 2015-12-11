@@ -1,6 +1,6 @@
 <?php namespace ArturKp\LaravelBanklinks\Estonia;
 
-use ArturKp\LaravelBanklinks\Banklink\Solo;
+use ArturKp\LaravelBanklinks\Banklink\iPizza;
 
 class Nordea extends iPizza
 {
