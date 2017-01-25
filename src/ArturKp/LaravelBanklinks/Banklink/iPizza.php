@@ -55,7 +55,7 @@ abstract class iPizza extends Banklink
             'VK_RETURN'  => $this->callbackUrl,
             'VK_CANCEL'  => $this->cancelUrl,
             'VK_LANG'    => $this->language,
-            'VK_DATETIME'=> \Carbon\Carbon::now()->toIso8601String()
+            'VK_DATETIME'=> \Carbon\Carbon::now()->format(DATE_ISO8601)
         );
 
         return $requestData;
