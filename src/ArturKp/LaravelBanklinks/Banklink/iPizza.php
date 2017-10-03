@@ -1,4 +1,6 @@
-<?php namespace ArturKp\LaravelBanklinks\Banklink;
+<?php
+
+namespace ArturKp\LaravelBanklinks\Banklink;
 
 abstract class iPizza extends Banklink
 {

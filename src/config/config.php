@@ -40,7 +40,7 @@ return [
 			'public_key'             => ''
 		],
 
-		'krediidipank' => [
+		'coop' => [
 			'seller_id'              => '',
 			'seller_name'            => '',
 			'seller_acc_num'         => '',

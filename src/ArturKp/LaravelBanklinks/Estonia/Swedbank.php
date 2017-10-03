@@ -1,4 +1,6 @@
-<?php namespace ArturKp\LaravelBanklinks\Estonia;
+<?php
+
+namespace ArturKp\LaravelBanklinks\Estonia;
 
 use ArturKp\LaravelBanklinks\Banklink\iPizza;
 

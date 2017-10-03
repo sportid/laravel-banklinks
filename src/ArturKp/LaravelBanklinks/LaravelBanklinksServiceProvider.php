@@ -1,4 +1,6 @@
-<?php namespace ArturKp\LaravelBanklinks;
+<?php
+
+namespace ArturKp\LaravelBanklinks;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 
