@@ -4,7 +4,6 @@ namespace ArturKp\LaravelBanklinks\Banklink;
 
 abstract class iPizza extends Banklink
 {
-
     protected $requestEncoding = 'UTF-8';
 
     protected $version = '008';
@@ -36,28 +35,27 @@ abstract class iPizza extends Banklink
     protected function getAdditionalFields()
     {
         return array(
-            'VK_ENCODING' => $this->requestEncoding
+            'VK_ENCODING' => $this->requestEncoding,
         );
     }
 
     public function getPaymentRequestData($orderId, $sum, $description, $refNr = null)
     {
-
         $requestData = array(
             'VK_SERVICE' => $this->getServiceId(self::PAYMENT_REQUEST),
             'VK_VERSION' => $this->version,
-            'VK_SND_ID'  => $this->sellerId,
-            'VK_STAMP'   => $orderId,
-            'VK_AMOUNT'  => $sum,
-            'VK_CURR'    => $this->currency,
-            'VK_ACC'     => $this->sellerAccountNumber,
-            'VK_NAME'    => $this->sellerName,
-            'VK_REF'     => $refNr,
-            'VK_MSG'     => $description,
-            'VK_RETURN'  => $this->callbackUrl,
-            'VK_CANCEL'  => $this->cancelUrl,
-            'VK_LANG'    => $this->language,
-            'VK_DATETIME'=> \Carbon\Carbon::now()->format(DATE_ISO8601)
+            'VK_SND_ID' => $this->sellerId,
+            'VK_STAMP' => $orderId,
+            'VK_AMOUNT' => $sum,
+            'VK_CURR' => $this->currency,
+            'VK_ACC' => $this->sellerAccountNumber,
+            'VK_NAME' => $this->sellerName,
+            'VK_REF' => $refNr,
+            'VK_MSG' => $description,
+            'VK_RETURN' => $this->callbackUrl,
+            'VK_CANCEL' => $this->cancelUrl,
+            'VK_LANG' => $this->language,
+            'VK_DATETIME' => \Carbon\Carbon::now()->format(DATE_ISO8601),
         );
 
         return $requestData;
@@ -76,7 +74,7 @@ abstract class iPizza extends Banklink
             'VK_MSG',
             'VK_RETURN',
             'VK_CANCEL',
-            'VK_DATETIME'
+            'VK_DATETIME',
         );
     }
 
@@ -97,7 +95,7 @@ abstract class iPizza extends Banklink
             'VK_SND_NAME',
             'VK_REF',
             'VK_MSG',
-            'VK_T_DATETIME'
+            'VK_T_DATETIME',
         );
     }
 
@@ -110,7 +108,7 @@ abstract class iPizza extends Banklink
             'VK_REC_ID',
             'VK_STAMP',
             'VK_REF',
-            'VK_MSG'
+            'VK_MSG',
         );
     }
 
@@ -120,7 +118,7 @@ abstract class iPizza extends Banklink
 
         $key = openssl_pkey_get_public(file_get_contents($this->publicKey));
 
-        return (openssl_verify( $hash , base64_decode($data[ $this->signatureReturnedField ]), $key) === 1);
+        return openssl_verify($hash, base64_decode($data[$this->signatureReturnedField]), $key) === 1;
     }
 
     protected function getRequestSignature($data, $fields)
@@ -141,17 +139,14 @@ abstract class iPizza extends Banklink
     {
         $hash = '';
 
-        foreach ($fields as $fieldName)
-        {
+        foreach ($fields as $fieldName) {
+            if (empty($data[$fieldName])) {
+                continue;
+            }
 
-            // if ( empty( $data[ $fieldName ]))
-            // {
-            //     continue;
-            // }
+            $content = $data[$fieldName];
 
-            $content = $data[ $fieldName ];
-
-            $hash .= sprintf("%03d", mb_strlen($content)) . $content;
+            $hash .= sprintf('%03d', mb_strlen($content)) . $content;
         }
 
         return $hash;
@@ -162,14 +157,13 @@ abstract class iPizza extends Banklink
         return 'VK_ENCODING';
     }
 
-    public function isCancelResponse( $data )
+    public function isCancelResponse($data)
     {
-        return $this->isValidResponse( $data, $this->getPaymentCancelFields() ) && $data['VK_SERVICE'] == $this->getServiceId( self::PAYMENT_CANCEL );
+        return $this->isValidResponse($data, $this->getPaymentCancelFields()) && $data['VK_SERVICE'] == $this->getServiceId(self::PAYMENT_CANCEL);
     }
 
-    public function isPaidResponse( $data )
+    public function isPaidResponse($data)
     {
-        return $this->isValidResponse( $data, $this->getPaymentSuccessFields() ) && $data['VK_SERVICE'] == $this->getServiceId( self::PAYMENT_SUCCESS );
+        return $this->isValidResponse($data, $this->getPaymentSuccessFields()) && $data['VK_SERVICE'] == $this->getServiceId(self::PAYMENT_SUCCESS);
     }
-
 }
